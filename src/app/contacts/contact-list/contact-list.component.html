@@ -1,19 +1,22 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="row">
-        <div class="col-xs-12">
-          <h2 class="title panel-title">Contacts</h2>
-        </div>
-        <div class="col-xs-12">
-          <a class="btn btn-success pull-right">New Contact</a>
-        </div>
-      </div>
-    </div>
-    <div class="panel-body">
-      <div class="row">
-        <div class="col-xs-12" *ngFor="let contact of contacts">
-          <cms-contact-item [contact]="contact" (click)="onSelected(contact)"></cms-contact-item>
-        </div>
+<div class="card">
+  <div class="card-header">
+    <div class="row">
+      <h2 class="col-md-8"><strong>Contacts</strong></h2>
+      <div class="col-md-4">
+        <a href="#" class="float-end btn btn-success">New Contact</a>
       </div>
     </div>
   </div>
+  <div class="card-body">
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let contact of contacts">
+        <span class="align-middle">{{ contact.name }}</span>
+        <img
+          src="{{ contact.imageUrl }}"
+          class="float-end img-responsive"
+          style="max-height: 100px"
+        />
+      </li>
+    </ul>
+  </div>
+</div>
