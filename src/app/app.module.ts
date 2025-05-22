@@ -14,11 +14,12 @@ import { DocumentDetailComponent } from './documents/document-detail/document-de
 import { MessageItemComponent } from './messages/message-item/message-item.component';
 import { MessageEditComponent } from './messages/message-edit/message-edit.component';
 import { MessageListComponent } from './messages/message-list/message-list.component';
+import { DropdownDirective } from './shared/dropdown.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
+    
     ContactsComponent,
     ContactListComponent,
     ContactDetailComponent,
@@ -26,13 +27,15 @@ import { MessageListComponent } from './messages/message-list/message-list.compo
     DocumentListComponent,
     DocumentItemComponent,
     DocumentDetailComponent,
+ 
     MessageItemComponent,
     MessageEditComponent,
     MessageListComponent,
     
   ],
   imports: [BrowserModule,
-    ContactItemComponent,],
+    ContactItemComponent,
+    HeaderComponent,   DropdownDirective,],
   providers: [],
   bootstrap: [AppComponent],
 })

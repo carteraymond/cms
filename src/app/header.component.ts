@@ -1,12 +1,11 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'cms-header',
-  standalone: false,
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  templateUrl: './header.component.html'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+  collapsed = true;
   @Output() selectedFeatureEvent = new EventEmitter<string>();
 
   constructor() { }
