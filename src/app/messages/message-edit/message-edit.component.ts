@@ -7,7 +7,6 @@ import { MessageService } from '../message.service';
   selector: 'cms-message-edit',
   templateUrl: './message-edit.component.html',
   styleUrls: ['./message-edit.component.css'],
-  standalone: false
 })
 export class MessageEditComponent implements OnInit {
   @ViewChild('subject') subjectInputRef: ElementRef;
