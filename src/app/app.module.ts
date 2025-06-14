@@ -16,6 +16,7 @@ import { MessageEditComponent } from './messages/message-edit/message-edit.compo
 import { MessageListComponent } from './messages/message-list/message-list.component';
 import { DropdownDirective } from './shared/dropdown.directive';
 import { AppRoutingModule } from './app-routing.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -31,16 +32,19 @@ import { AppRoutingModule } from './app-routing.module';
     DocumentDetailComponent,
  
     MessageItemComponent,
-    MessageEditComponent,
+
     MessageListComponent,
-    ContactItemComponent,
-    HeaderComponent,
-    DropdownDirective,
+
     
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,],
+    AppRoutingModule,
+    MessageEditComponent,
+    ContactItemComponent,
+    HeaderComponent,
+    DropdownDirective,
+  RouterModule],
   providers: [],
   bootstrap: [AppComponent],
 })
