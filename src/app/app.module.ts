@@ -30,7 +30,7 @@ import { DocumentEditComponent } from './documents/document-edit/document-edit.c
     DocumentsComponent,
     DocumentListComponent,
     DocumentItemComponent,
-    DocumentDetailComponent,
+    
  
     MessageItemComponent,
 
@@ -46,6 +46,7 @@ import { DocumentEditComponent } from './documents/document-edit/document-edit.c
     ContactItemComponent,
     HeaderComponent,
     DropdownDirective,
+    DocumentDetailComponent,
   RouterModule],
   providers: [],
   bootstrap: [AppComponent],
