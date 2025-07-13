@@ -1,18 +1,14 @@
-import { Component, OnInit,} from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'cms-header',
-  templateUrl: './header.component.html',
-  imports: [RouterModule],
+  templateUrl: './header.component.html'
 })
 export class HeaderComponent implements OnInit {
   collapsed = true;
-
 
   constructor() { }
 
   ngOnInit(): void {
   }
-
 }

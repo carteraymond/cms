@@ -5,26 +5,20 @@ import { MessageService } from '../message.service';
 @Component({
   selector: 'cms-message-list',
   templateUrl: './message-list.component.html',
-  styleUrls: ['./message-list.component.css'],
-  standalone: false
+  styleUrls: ['./message-list.component.css']
 })
 export class MessageListComponent implements OnInit {
   messages: Message[] = [];
 
-  constructor(private messageService: MessageService) {}
+  constructor(private messageService: MessageService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.messages = this.messageService.getMessages();
     this.messageService.messageChangedEvent
-    .subscribe(
-      (messages: Message[]) => {
-        this.messages = messages;
-      }
-    )
-  }
-
-  onAddMessage(message: Message) {
-    // Add the new message to the list
-    this.messages.push(message);
+      .subscribe(
+        (messages: Message[]) => {
+          this.messages = messages;
+        }
+      );
   }
 }

@@ -1,42 +1,53 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="row pad-all">
-      <h4 class="title margin-left-right">{{ editMode ? 'Edit Document' : 'Add Document' }}</h4>
+      <h4 class="title margin-left-right">{{ editMode ? 'Edit Contact' : 'Add Contact' }}</h4>
     </div>
   </div>
   <div class="panel-body">
     <form>
       <div class="row">
         <div class="col-sm-12 form-group">
-          <label for="name">Document Title</label>
+          <label for="name">Name</label>
           <input
             type="text"
             id="name"
             class="form-control"
-            placeholder="Document title"
+            placeholder="Contact name"
             #name>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-12 form-group">
-          <label for="description">Description</label>
+          <label for="email">Email</label>
           <input
-            type="text"
-            id="description"
+            type="email"
+            id="email"
             class="form-control"
-            placeholder="Document description"
-            #description>
+            placeholder="Contact email"
+            #email>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-12 form-group">
-          <label for="url">URL</label>
+          <label for="phone">Phone</label>
           <input
             type="text"
-            id="url"
+            id="phone"
             class="form-control"
-            placeholder="Document URL"
-            #url>
+            placeholder="Contact phone"
+            #phone>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label for="imageUrl">Image URL</label>
+          <input
+            type="text"
+            id="imageUrl"
+            class="form-control"
+            placeholder="Image URL"
+            #imageUrl>
         </div>
       </div>
       <div class="row">

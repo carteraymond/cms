@@ -4,9 +4,10 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class WindRefService {
-  constructor() {}
 
-  getNativeWindow(): any {
+  constructor() { }
+
+  getNativeWindow() {
     return window;
   }
 }
