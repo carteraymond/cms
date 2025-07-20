@@ -55,17 +55,21 @@ export class ContactEditComponent implements OnInit {
 
     if (this.editMode) {
       // Update existing contact
-      if (this.contact) {
-        this.contact.name = nameValue;
-        this.contact.email = emailValue;
-        this.contact.phone = phoneValue;
-        this.contact.imageUrl = imageUrlValue;
-        this.contactService.updateContact(this.contact);
-      }
-    } else {
+    }
+    if (this.contact) {
+            const newContact = new Contact(
+              this.contact.id,  // Keep original ID
+              nameValue,
+              emailValue,
+              phoneValue,
+              imageUrlValue,
+              null
+            );
+            this.contactService.updateContact(this.contact, newContact);
+          } else {
       // Create new contact
       const newContact = new Contact(
-        Date.now().toString(), // Simple ID generation
+        '', // Simple ID generation
         nameValue,
         emailValue,
         phoneValue,

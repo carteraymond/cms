@@ -29,7 +29,7 @@ export class DocumentEditComponent implements OnInit {
         this.id = params['id'];
         this.editMode = params['id'] != null;
         if (this.editMode) {
-          this.document = this.documentService.getDocument(this.id);
+          this.document = this.documentService.getDocument(parseInt(this.id));
           if (this.document) {
             // Pre-populate form fields
             setTimeout(() => {
@@ -45,23 +45,26 @@ export class DocumentEditComponent implements OnInit {
     );
   }
 
-  onSave() {
+    onSave() {
     const nameValue = this.name.nativeElement.value;
     const descriptionValue = this.description.nativeElement.value;
     const urlValue = this.url.nativeElement.value;
 
     if (this.editMode) {
-      // Update existing document
       if (this.document) {
-        this.document.name = nameValue;
-        this.document.description = descriptionValue;
-        this.document.url = urlValue;
-        this.documentService.updateDocument(this.document);
+        const newDocument = new Document(
+          this.document.id,  // Keep original ID
+          nameValue,
+          descriptionValue,
+          urlValue,
+          null
+        );
+        this.documentService.updateDocument(this.document, newDocument);
       }
     } else {
       // Create new document
       const newDocument = new Document(
-        Date.now().toString(), // Simple ID generation
+        '',  // ID will be set by the service
         nameValue,
         descriptionValue,
         urlValue,
