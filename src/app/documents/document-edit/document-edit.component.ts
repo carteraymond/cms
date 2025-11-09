@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Document } from '../document.model';
 import { DocumentService } from '../document.service';
+import { FormGroup, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'cms-document-edit',
@@ -13,6 +14,7 @@ export class DocumentEditComponent implements OnInit {
   @ViewChild('description') description: ElementRef;
   @ViewChild('url') url: ElementRef;
 
+  originalDocument: Document | null;
   document: Document | null = null;
   editMode = false;
   id: string;
@@ -23,60 +25,54 @@ export class DocumentEditComponent implements OnInit {
     private route: ActivatedRoute
   ) { }
 
-  ngOnInit(): void {
-    this.route.params.subscribe(
-      (params) => {
-        this.id = params['id'];
-        this.editMode = params['id'] != null;
-        if (this.editMode) {
-          this.document = this.documentService.getDocument(parseInt(this.id));
-          if (this.document) {
-            // Pre-populate form fields
-            setTimeout(() => {
-              if (this.document) {
-                this.name.nativeElement.value = this.document.name;
-                this.description.nativeElement.value = this.document.description;
-                this.url.nativeElement.value = this.document.url;
-              }
-            });
-          }
-        }
-      }
-    );
-  }
+ ngOnInit(): void {
+  this.route.params.subscribe((params: Params) => {
+    const id = params['id'];
 
-    onSave() {
-    const nameValue = this.name.nativeElement.value;
-    const descriptionValue = this.description.nativeElement.value;
-    const urlValue = this.url.nativeElement.value;
+    if (!id) {
+      // NEW document
+      this.editMode = false;
+      this.document = {
+        id: '',
+        name: '',
+        description: '',
+        url: '',
+        children: []
+      };
+      return;
+    }
 
-    if (this.editMode) {
-      if (this.document) {
-        const newDocument = new Document(
-          this.document.id,  // Keep original ID
-          nameValue,
-          descriptionValue,
-          urlValue,
-          null
-        );
-        this.documentService.updateDocument(this.document, newDocument);
-      }
+    // EDIT existing document
+    this.originalDocument = this.documentService.getDocument(+id);
+    if (!this.originalDocument) {
+      return;
+    }
+
+    this.editMode = true;
+    this.document = JSON.parse(JSON.stringify(this.originalDocument));
+  });
+}
+
+
+
+    onSubmit(form:NgForm) {
+       // get values from the form
+    const value = form.value;
+
+    // create a new Document object using the form values
+    const newDocument = new Document(value.id, value.name, value.description, value.url,[]);
+
+    // check if we are in edit mode
+    if (this.editMode === true) {
+      this.documentService.updateDocument(this.originalDocument!, newDocument);
     } else {
-      // Create new document
-      const newDocument = new Document(
-        '',  // ID will be set by the service
-        nameValue,
-        descriptionValue,
-        urlValue,
-        null
-      );
       this.documentService.addDocument(newDocument);
     }
 
-    this.onCancel();
+    this.router.navigate(['/documents']);
   }
-
+  
   onCancel() {
-    this.router.navigate(['../'], { relativeTo: this.route });
-  }
+		this.router.navigate(['/documents'], { relativeTo: this.route });
+	}
 }

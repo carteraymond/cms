@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Document } from '../document.model';
 import { DocumentService } from '../document.service';
 import { WindRefService } from '../../wind-ref.service';
@@ -20,15 +20,14 @@ export class DocumentDetailComponent implements OnInit {
     private windRefService: WindRefService
   ) { }
 
-  ngOnInit(): void {
-    this.nativeWindow = this.windRefService.getNativeWindow();
-
+ ngOnInit(): void {
+    //subscribe to the params of the current active route
     this.route.params.subscribe(
-      (params) => {
-        const id = params['id'];
-        this.document = this.documentService.getDocument(id);
+      (params: Params) => {
+        //get the specific document (passing id param) and store it in document
+        this.document = this.documentService.getDocument(params['id']);
       }
-    );
+    )
   }
 
   onView() {

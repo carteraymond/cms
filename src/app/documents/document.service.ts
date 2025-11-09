@@ -31,14 +31,14 @@ export class DocumentService {
     return this.documents.slice();
   }
 
-  getDocument(id: number): Document | null {
-    for (const document of this.documents) {
-      if (document.id) {
-        return document;
-      }
+ getDocument(id: number | string): Document | null {
+  for (const document of this.documents) {
+    if (document.id === id.toString()) {
+      return document;
     }
-    return null;
   }
+  return null;
+}
 
   addDocument(newDocument: Document): void {
     if (!newDocument) {
