@@ -4,8 +4,9 @@
       <h4 class="title margin-left-right">{{ editMode ? 'Edit Contact' : 'Add Contact' }}</h4>
     </div>
   </div>
+
   <div class="panel-body">
-    <form>
+    <form *ngIf="contact" (ngSubmit)="onSubmit(f)" #f="ngForm" id="contact-edit" novalidate>
       <div class="row">
         <div class="col-sm-12 form-group">
           <label for="name">Name</label>
@@ -14,9 +15,13 @@
             id="name"
             class="form-control"
             placeholder="Contact name"
-            #name>
+            name="name"
+            required
+            [(ngModel)]="contact.name"
+            #name="ngModel">
         </div>
       </div>
+
       <div class="row">
         <div class="col-sm-12 form-group">
           <label for="email">Email</label>
@@ -25,20 +30,29 @@
             id="email"
             class="form-control"
             placeholder="Contact email"
-            #email>
+            name="email"
+            required
+            pattern="^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+            [(ngModel)]="contact.email"
+            #email="ngModel">
         </div>
       </div>
+
       <div class="row">
         <div class="col-sm-12 form-group">
           <label for="phone">Phone</label>
           <input
-            type="text"
+            type="tel"
             id="phone"
             class="form-control"
             placeholder="Contact phone"
-            #phone>
+            name="phone"
+            pattern="^[0-9\-\+]{9,15}$"
+            [(ngModel)]="contact.phone"
+            #phone="ngModel">
         </div>
       </div>
+
       <div class="row">
         <div class="col-sm-12 form-group">
           <label for="imageUrl">Image URL</label>
@@ -47,13 +61,21 @@
             id="imageUrl"
             class="form-control"
             placeholder="Image URL"
-            #imageUrl>
+            name="imageUrl"
+            [(ngModel)]="contact.imageUrl">
         </div>
       </div>
+
+      <div *ngIf="(name.invalid && name.touched) || (email.invalid && email.touched) || (phone.invalid && phone.touched)" class="alert alert-danger">
+        <div *ngIf="name.invalid && name.touched">Name is required.</div>
+        <div *ngIf="email.invalid && email.touched">Valid Email is required.</div>
+        <div *ngIf="phone.invalid && phone.touched">Phone must be valid (numbers, +, - only).</div>
+      </div>
+
       <div class="row">
         <div class="col-xs-12">
-          <button class="btn btn-success" type="button" (click)="onSave()">Save</button>
-          <button class="btn btn-primary" type="button" (click)="onCancel()">Cancel</button>
+          <button type="submit" class="btn btn-success" [disabled]="f.invalid">Save</button>
+          <button type="button" class="btn btn-primary" (click)="onCancel()">Cancel</button>
         </div>
       </div>
     </form>

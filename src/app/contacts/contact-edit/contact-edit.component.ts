@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Contact } from '../contact.model';
 import { ContactService } from '../contact.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'cms-contact-edit',
@@ -9,13 +10,11 @@ import { ContactService } from '../contact.service';
   styleUrls: ['./contact-edit.component.css']
 })
 export class ContactEditComponent implements OnInit {
-  @ViewChild('name') name: ElementRef;
-  @ViewChild('email') email: ElementRef;
-  @ViewChild('phone') phone: ElementRef;
-  @ViewChild('imageUrl') imageUrl: ElementRef;
 
+  originalContact: Contact | null
   contact: Contact | null = null;
-  editMode = false;
+  groupContacts: Contact[] = [];
+  editMode: boolean= false;
   id: string;
 
   constructor(
@@ -24,63 +23,61 @@ export class ContactEditComponent implements OnInit {
     private route: ActivatedRoute
   ) { }
 
-  ngOnInit(): void {
-    this.route.params.subscribe(
-      (params) => {
-        this.id = params['id'];
-        this.editMode = params['id'] != null;
-        if (this.editMode) {
-          this.contact = this.contactService.getContact(this.id);
-          if (this.contact) {
-            // Pre-populate form fields
-            setTimeout(() => {
-              if (this.contact) {
-                this.name.nativeElement.value = this.contact.name;
-                this.email.nativeElement.value = this.contact.email;
-                this.phone.nativeElement.value = this.contact.phone;
-                this.imageUrl.nativeElement.value = this.contact.imageUrl;
-              }
-            });
-          }
-        }
-      }
-    );
-  }
+ ngOnInit(): void {
+  this.route.params.subscribe(params => {
+    const id = params['id'];
 
-  onSave() {
-    const nameValue = this.name.nativeElement.value;
-    const emailValue = this.email.nativeElement.value;
-    const phoneValue = this.phone.nativeElement.value;
-    const imageUrlValue = this.imageUrl.nativeElement.value;
+    if (!id) {
+      // Adding new contact
+      this.editMode = false;
+      this.contact = new Contact('', '', '', '', '', null);
+      return;
+    }
+
+    // Editing existing contact
+    this.originalContact = this.contactService.getContact(id);
+    if (!this.originalContact) return;
+
+    this.editMode = true;
+    this.contact = new Contact(
+      this.originalContact.id,
+      this.originalContact.name,
+      this.originalContact.email,
+      this.originalContact.phone,
+      this.originalContact.imageUrl,
+      this.originalContact.group ? JSON.parse(JSON.stringify(this.originalContact.group)) : null
+    );
+
+    // Initialize groupContacts if the contact has a group
+    if (this.contact.group) {
+        this.groupContacts = JSON.parse(JSON.stringify(this.contact.group));
+      }
+  });
+}
+
+  onSubmit(form: NgForm) {
+  const value = form.value;
+  if (!this.contact) return;
+
+  const newContact = new Contact(
+    this.editMode ? this.contact.id : '',
+    value.name,
+    value.email,
+    value.phone,
+    value.imageUrl,
+    this.groupContacts.length > 0 ? this.groupContacts : null
+  );
 
     if (this.editMode) {
-      // Update existing contact
-    }
-    if (this.contact) {
-            const newContact = new Contact(
-              this.contact.id,  // Keep original ID
-              nameValue,
-              emailValue,
-              phoneValue,
-              imageUrlValue,
-              null
-            );
-            this.contactService.updateContact(this.contact, newContact);
-          } else {
-      // Create new contact
-      const newContact = new Contact(
-        '', // Simple ID generation
-        nameValue,
-        emailValue,
-        phoneValue,
-        imageUrlValue,
-        null
-      );
+      this.contactService.updateContact(this.originalContact!, newContact);
+    } else {
       this.contactService.addContact(newContact);
     }
+  
 
-    this.onCancel();
-  }
+  this.onCancel();
+}
+
 
   onCancel() {
     this.router.navigate(['../'], { relativeTo: this.route });
