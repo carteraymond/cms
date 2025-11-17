@@ -21,13 +21,13 @@ export class ContactListComponent implements OnInit, OnDestroy{
     this.term = value;
   }
   ngOnInit() :void {
-    this.contacts = this.contactService.getContacts();
         this.subscription = this.contactService.contactListChangedEvent
       .subscribe(
         (contactsList: Contact[]) => {
           this.contacts = contactsList;
         }
       );
+      this.contactService.getContacts();
   }
   ngOnDestroy(): void {
     if (this.subscription) {
